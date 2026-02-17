@@ -1,3 +1,4 @@
+import redisClient from "../config/redis.js";
 import { createUser, fethcAllUsers } from "../models/user.model.js";
 import { successResponse } from "../utils/response.js";
 
@@ -37,8 +38,20 @@ export const addUser = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
+    const cacheKey = "users:all";
+    const cachedUsers = await redisClient.get(cacheKey);
+
+    if (cachedUsers) {
+      console.log("⚡ Returning users from Redis");
+      return successResponse(res, JSON.parse(cachedUsers));
+    }
+
+    console.log("🐌 Fetching users from Database");
+    //Fetching for DB
     const users = await fethcAllUsers();
-    successResponse(res, users)
+
+   await redisClient.set(cacheKey, JSON.stringify(users), { ex: 60 });
+   successResponse(res, users)
 
   } catch (error) {
     errorResponse(res, error.message);
