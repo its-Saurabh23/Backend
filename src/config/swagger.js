@@ -1,0 +1,22 @@
+import swaggerJSDoc from "swagger-jsdoc";
+
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "User API",
+      version: "1.0.0",
+      description: "User management APIs",
+    },
+    servers: [
+      {
+        url: "http://localhost:3000",
+        description: "Local server",
+      },
+    ],
+  },
+  // 👇 where swagger reads your API comments
+apis: ["./src/routes/*.js"]
+};  
+
+export const swaggerSpec = swaggerJSDoc(options);
