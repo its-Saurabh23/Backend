@@ -1,6 +1,6 @@
 import redisClient from "../config/redis.js";
 import { createUser, fethcAllUsers } from "../models/user.model.js";
-import { successResponse } from "../utils/response.js";
+import { errorResponse, successResponse } from "../utils/response.js";
 
 
 export const addUser = async (req, res) => {
@@ -51,6 +51,7 @@ export const getAllUsers = async (req, res) => {
     const users = await fethcAllUsers();
 
    await redisClient.set(cacheKey, JSON.stringify(users), { ex: 60 });
+   
    successResponse(res, users)
 
   } catch (error) {
