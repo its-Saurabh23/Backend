@@ -44,7 +44,7 @@ export const getAllUsers = async (req, res) => {
     if (cachedUsers) {
       console.log("⚡ Returning users from Redis");
       return res.status(200).json({
-        data: JSON.parse(cachedUsers),
+        data: cachedUsers,
         source: "redis",
         status: "success",
         statusCode: 200,
