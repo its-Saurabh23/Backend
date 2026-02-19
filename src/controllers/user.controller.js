@@ -43,16 +43,22 @@ export const getAllUsers = async (req, res) => {
 
     if (cachedUsers) {
       console.log("⚡ Returning users from Redis");
-      return successResponse(res, JSON.parse(cachedUsers));
+      return res.status(200).json({
+        data: JSON.parse(cachedUsers),
+        source: "redis",
+        status: "success",
+        statusCode: 200,
+        timestamp: new Date().toISOString(),
+      });
     }
 
     console.log("🐌 Fetching users from Database");
     //Fetching for DB
     const users = await fethcAllUsers();
 
-   await redisClient.set(cacheKey, JSON.stringify(users), { ex: 60 });
-   
-   successResponse(res, users)
+    await redisClient.set(cacheKey, JSON.stringify(users), { ex: 60 });
+
+    successResponse(res, users)
 
   } catch (error) {
     errorResponse(res, error.message);

@@ -26,3 +26,7 @@ app.use("/api/posts", postsRoutes);
 app.use("/api/upload", uploadImage);
 
 export default app;  
+
+
+
+ 
