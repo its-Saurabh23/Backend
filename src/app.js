@@ -13,7 +13,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Swagger UI
+// Swagger end point 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
